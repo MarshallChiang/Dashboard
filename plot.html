@@ -1,0 +1,412 @@
+<!DOCTYPE Html>
+    <html lang='en'>
+        <head>
+            <meta charset="utf-8"> 
+            <title>Yard</title>
+            <link rel='shortcut icon' type='image/x-icon' href='../static/icon.ico' />
+            <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+            <script src="../script/clipboard-js-master/dist/clipboard.min.js"></script>
+            <script src="https://kit.fontawesome.com/5936135c7f.js" crossorigin="anonymous"></script>
+            <script src="../script/multiple-select/jquery.dropdown.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-zh_TW.min.js"></script>
+            <link rel="stylesheet" type="text/css" href="../script/multiple-select/jquery.dropdown.css">
+            <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css"> -->
+            <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+            <!-- include datetimepicker -->
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+            <!-- include handsontable -->
+            <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+            <link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet" media="screen">
+            <!-- include Vue 2.x -->
+            <script src="https://cdn.jsdelivr.net/npm/vue@^2"></script>
+            <!-- include vue-treeselect & its styles. you can change the version tag to better suit your needs. -->
+            <script src="https://cdn.jsdelivr.net/npm/@riophae/vue-treeselect@^0.4.0/dist/vue-treeselect.umd.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@riophae/vue-treeselect@^0.4.0/dist/vue-treeselect.min.css">
+            <!-- include date range picker -->
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+            <style>
+                .bolder {
+                    font-weight: bolder;
+                }
+                .bold {
+                    font-weight: bold;
+                }
+                .paddings-exlight {
+                    padding: 5px;
+                }
+                .paddings-light {
+                    padding: 15px;
+                }
+                .letter-spacing-medium {
+                    letter-spacing: 2.5px;
+                }
+                * {
+                    font-family: 'Montserrat';
+                    font-size: 14px;
+                }
+                .vue-treeselect__label { 
+                    font-weight : normal;
+                    font-size : 3px;
+                }
+                .logo-anime {
+                    background-color: #ff4e4e; 
+                    padding : 0;
+                    border-width : 2px;
+                }
+                #data-source {
+                    width:100%;
+                }
+                .rotate {
+                    -webkit-transform: rotate(90deg);
+                    -moz-transform: rotate(90deg);
+                    -o-transform: rotate(90deg);
+                    -ms-transform: rotate(90deg);
+                    transform: rotate(90deg);
+                }
+            </style>
+        </head>
+        <body>
+            <div style="margin-left:15px; margin-right:15px">
+                <div class="container-fluid" id="nav_search_bar">
+                    <nav class="navbar navbar-expand-lg bg-dark navbar-dark rounded" style="margin-bottom:5px">
+                        <img src="https://cloud.shopback.com/raw/upload/static/images/footer/happydance-loader.gif" class="navbar-brand rounded logo-anime border" style="border-width:2px !important">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarToggler">
+                            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link fa fa-link" href="/link"> Links</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fa fa-dashboard active" href="/plot"> Performance</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fa fa-calendar" href="/schedule"> Schedule</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fa fa-check-square" href="/task"> Task</a>
+                                </li>
+                            </ul>
+                            <form class="form-inline my-2 my-lg-0" method="POST" id="signup_form" method="POST" action="/auth">
+                                <input type="hidden" name="auth_type" value="LogOut">
+                                <button type="submit" class="btn my-2 my-sm-0" >
+                                    <span class="fas fa-power-off"></span>
+                                </button>
+                            </form>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div style="margin:5px">
+                    <div class="form-row paddings-light rounded align-items-center"> 
+                        <div class="shadow-sm bg-light rounded col-md-3" style='height:85vh; padding:30px'>
+                            <div id="merchant-dropdown" class="merchant-dropdown">
+                                <select style="display:none"  id="input-items" multiple>
+                                    {% raw options %}
+                                </select>
+                            </div>
+                            <div class="border-top my-3"></div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" id="daterange" name="daterange" value="01/01/2019 - 01/15/2030" />
+                                    <div class="input-group-append">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top:15px">
+                                <div class="input-group" role="group">
+                                    <select class="custom-select" id="country_option">
+                                        <option value="TW" selected>🇹🇼 Taiwan</option>
+                                        <option value="SG">🇸🇬 Singapore</option>
+                                        <option value="MY">🇲🇾 Malaysia</option>
+                                        <option value="TH">🇹🇭 Thailand</option>
+                                        <option value="ID">🇮🇩 Indonesia</option>
+                                        <option value="PH">🇵🇭 Philippines</option>
+                                        <option value="AU">🇦🇺 Australia</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <button class="btn input-group-text"  disabled data-toggle="tooltip" data-placement="right" title="Specify Region.">
+                                            <i style="color:black" class="fa fa-globe-asia"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-top my-3"></div>
+                            <div id="plot-dropdown" class="plot-dropdown">
+                                <select class="fa" style="display:none"  id="plot-items" multiple >
+                                    <option value="clicks">Clicks</option>
+                                    <option value="advertiser_info">Conversion</option>
+                                    <option value="payout">Revenue</option>
+                                    <option value="sale_amount">Gross Merchandise Volume</option>
+                                </select>
+                            </div>
+                            
+                            <div >
+                                <button id="submit_btn" class="btn rounded justify-content-center border" style="background-color: #eee; margin-top:15px" onclick="submitRequest()">
+                                        <span style="font-size:10px" id="icon_loading" class="d-none spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+                                        <span style="font-size:10px" id="icon_submit" class="fa fa-bar-chart"></span>
+                                </button>
+                            </div>
+                            <div class="alert alert-danger d-none" id="error-alert" style="margin-top:15px; word-break: break-word" role="alert">
+                            </div> 
+                            <div class="border-top my-3"></div>
+                            <div class="rounded paddings-exlight" style="background-color:gainsboro;">
+                                <p class="btn text-align-center" style="margin:0px" data-toggle="collapse" href="#additional-setup" role="button" aria-expanded="false" aria-controls="additional-setup">
+                                    <a class="fas fa-cogs"></a> Optional Setting
+                                </p>
+                                <div class="border-top my-1" style="background-color:silver; height:0.5em"></div>
+                                <div class="collapse" id="additional-setup">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color:transparent">
+                                            <span class="col-1 fas fa-sitemap" data-toggle="tooltip" data-placement="right" title="Choose dimension for metric performance breaking down"></span>                                       
+                                            <div id="attr-dropdown" class="attr-dropdown col-11">
+                                                <select style="display:none" id="attr-items" multiple>
+                                                    <option value="adv_sub2">Category</option>
+                                                    <option value="adv_sub3">SKU</option>
+                                                    <option value="adv_sub5">Product</option>
+                                                </select>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color:transparent">
+                                            <span class="col-1 fa fa-clock" data-toggle="tooltip" data-placement="right" title="Interval of time index grouping"></span>                                       
+                                            <div class="col-11 input-group">
+                                                <input type="text" id="interval-value" class="form-control" value="1" aria-label="Text input with dropdown button" aria-describedby="time-interval">
+                                                <div class="input-group-append">
+                                                    <button class="btn dropdown-toggle shadow-md input-group-text" id="time-interval" value="D" style="background-color : #eee" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Day </button>
+                                                    <div class="dropdown-menu time-interval">
+                                                        <a class="dropdown-item" value="H" onclick="switchInterval(this)">Hour</a>
+                                                        <a class="dropdown-item" value="D" onclick="switchInterval(this)">Day</a>
+                                                        <a class="dropdown-item" value="W" onclick="switchInterval(this)">Week</a>
+                                                        <a class="dropdown-item" value="M" onclick="switchInterval(this)">Month</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color:transparent">
+                                            <span class="col-1 fa fa-list-ol" data-toggle="tooltip" data-placement="right" title="Choose ASC/DESC and the amount to be displayed in plot of each groups"></span>                                       
+                                            <div class="col-11 input-group">
+                                                <div class="input-group-prepend">
+                                                    <button class="btn shadow-md input-group-text" id="sorting" value="DESC" style="background-color : #eee" type="button" onclick="switchSorting(this)">
+                                                        <span id="sort-icon" class="fa fa-sort-amount-down"></span>
+                                                    </button>
+                                                </div>
+                                                <input type="text" id="sorting-value" class="form-control" value="1" aria-label="Text input with dropdown button" aria-describedby="sorting">
+                                            </div>
+                                        </li> -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>                          
+                        <div class="paddings-light shadow-sm bg-light rounded col-md-9" style='height:85vh'>
+                            <div style="margin:5px">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link far fa-chart-bar active" data-toggle="tab" href="#plot-tab"> Plot</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link far fa-list-alt" id="snippet-tab" data-toggle="tab" href="#table-tab"> Snippet</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link far fa-lightbulb" data-toggle="tab" href="#"> Insight</a>
+                                    </li>
+                                    <li class="nav-item">
+                                </ul>
+                            </div>
+                            <div class="tab-content" style="height: 600px;">
+                                <div class="tab-pane active h-100" id="plot-tab">
+                                    <div class="paddings-light h-100 embed-responsive">
+                                        <iframe id="plot-output" class=".embed-responsive-item"></iframe>
+                                    </div>
+                                </div>
+                                <div class="tab-pane paddings-exlight" id="table-tab">
+                                    <div id="data-source"></div>
+                                </div>  
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+                    
+        <script>
+
+            $(function() {
+                $('input[name="daterange"]').daterangepicker({
+                    opens: "right",
+                    timePicker: true,
+                    startDate : moment().startOf("hour").subtract(7*24, "hour"),
+                    endDate : moment().startOf('hour'),
+                    autoUpdateInput : true,
+                    locale : {
+                        format : 'MM/DD HH:mm' 
+                    }
+                }, function(start, end, label) {
+                    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+                });
+            });
+            $('.merchant-dropdown').dropdown({
+                input : '<input type="text" placeholder="Select Merchant(s)">',
+                multipleMode: 'label',
+                minCount : 1,
+                minCountErrorMessage : '1 item to be selected at least',
+                limitCount : 10,
+                limitCountErrorMessage : 'Limited to 10 items'
+            });
+            $('.plot-dropdown').dropdown({
+                input : '<input type="text" placeholder="Select Metric(s)">',
+                multipleMode: 'label',
+                choice : function() {
+                    $("#density_option").attr("disabled", true)
+                    var eles = this.config.data;
+                    for (var i = 0; i < eles.length; i ++) {
+                        if (['payout', 'sale_amount'].includes(eles[i].id) & eles[i].selected ) {
+                            $("#density_option").attr("disabled", false)
+                        }
+                    }
+                }
+            });
+            $('.attr-dropdown').dropdown({
+                input : '<input type="text" placeholder="Select Attr(s)">',
+                multipleMode: 'label',
+                limitCount : 1,
+                limitCountErrorMessage : '1 item to be selected at max'
+            });
+            function switchInterval(e) {
+                var time_interval_btn = document.getElementById("time-interval")
+                time_interval_btn.innerHTML = e.innerHTML
+                time_interval_btn.value = e.getAttribute("value")
+                
+            }
+            function switchSorting(e) {
+                var icon = document.getElementById("sort-icon")
+                if (e.value == "DESC") {
+                    icon.classList = "fa fa-sort-amount-down-alt"
+                    e.value = "ASC"
+                }
+                else {
+                    icon.classList = "fa fa-sort-amount-down"
+                    e.value = "DESC"
+                }
+            }
+            function getSelected(i) {
+                var selected = $('#'+ i + ' :selected')
+                var selected_arr = new Array();
+                for (var j = 0; j < selected.length; j ++) {
+                    selected_arr.push(selected[j].value)
+                }
+                return selected_arr
+            }
+            function warningAlert(b, t) { 
+                if (b) {
+                    $("#error-alert").removeClass("d-none");
+                    $("#error-alert").text(t)
+                }
+                else {
+                    $("#error-alert").addClass("d-none");
+                    $("#error-alert").text("")
+                }
+            }
+            function submitRequest() {
+                var input_items_arr = getSelected("input-items");
+                var start = $('#daterange').data('daterangepicker').startDate._d;
+                var end = $('#daterange').data('daterangepicker').endDate._d;
+                var utc_offset = start.getTimezoneOffset();
+                var interval = document.getElementById("time-interval").value;
+                var interval_value = document.getElementById("interval-value").value;
+                var plots = getSelected("plot-items")
+                var attrs = getSelected("attr-items")
+                start.setMinutes(start.getMinutes()-utc_offset);
+                end.setMinutes(end.getMinutes()-utc_offset);
+                if (input_items_arr.length == 0 || plots.length == 0 ) {
+                    warningAlert(1, "None of merchant or metric was selected.")
+                    return
+                }
+                else if (attrs.length == 0 | plots.includes('clicks')) {
+                    var p_query = plots
+                }
+                else {
+                    var p_query = new Object()
+                    p_query[attrs[0]] = plots
+                }
+                console.log(p_query)
+                $("#submit_btn").attr("disabled", true)
+                $("#icon_submit").addClass("d-none")
+                $("#icon_loading").removeClass("d-none")
+                
+                var req = new XMLHttpRequest();
+                req.open('POST','/plot');
+                req.onreadystatechange = function(){
+                    if(req.readyState == 4 && req.status == 200){
+                        var result = req.responseText;
+                        plotCallback(result)
+                    }
+                }
+                var data = {
+                    "offers" : input_items_arr,
+                    "lookup" : p_query,
+                    "start" : start.toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " "),
+                    "end" : end.toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " "),
+                    "interval" : interval_value + interval,
+                    "width" : $("#plot-tab").width(),
+                    "height" : $("#plot-tab").height()
+                }
+                req.send(JSON.stringify(data));
+            }
+            function plotCallback(data) {
+                var pid = data
+                $.ajax({
+                    url : "https://locrev.s3-ap-northeast-1.amazonaws.com/" + pid + ".html",
+                    success : function(data) {
+                        document.getElementById("plot-output").setAttribute(
+                            "src", "https://locrev.s3-ap-northeast-1.amazonaws.com/" + pid + ".html"
+                        )
+                        var data_arr = [];
+                        var table_data = $.getJSON("https://locrev.s3-ap-northeast-1.amazonaws.com/" + pid + ".json", function(data) {
+                            data_arr = data
+                        });
+                        var data_arr = table_data.responseJSON;
+                        $("#snippet-tab").on("shown.bs.tab", function(e){
+                            createTable(data_arr)
+                        });
+                        $("#icon_loading").addClass("d-none")
+                        $("#icon_submit").removeClass("d-none")
+                        $("#submit_btn").attr("disabled", false)
+                    },
+                    error : function() {
+                        setTimeout(function(){plotCallback(pid)}, 5000)
+                    }
+                    
+                })
+            }
+            function createTable(dataObject) {
+                var hotElement = document.querySelector('#data-source');
+                var hotSettings = {
+                data: dataObject.slice(1),
+                stretchH: 'all',
+                autoWrapRow: true,
+                height : 600,
+                colHeaders : true,
+                colHeaders : dataObject[0],
+                rowHeaders: true,
+                filters: true,
+                dropdownMenu: true,
+                licenseKey: "non-commercial-and-evaluation"
+                }
+                var hot = new Handsontable(hotElement, hotSettings);
+            }
+        </script>
+        </body>
+    </html>
