@@ -15,8 +15,8 @@ import re
 import os
 
 s3 = boto3.client('s3')
-NetworkToken="NETJTqTrjj38XObdBhygFOQ2ULa1V2"
-api_url = "https://shopback.api.hasoffers.com/Apiv3/json"
+NetworkToken = os.environ["NetworkToken"]
+api_url = os.environ["api_url"]
 data_source = {
     "public_variables" : lambda i, s, e, p=1 : sum([
         [
